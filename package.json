@@ -1,0 +1,47 @@
+{
+  "name": "ut-port-registry",
+  "version": "0.0.0",
+  "description": "service discovery and data store",
+  "main": "index.js",
+  "dependencies": {
+    "consul": "^0.29.0",
+    "ut-port-script": "^5.5.6"
+  },
+  "devDependencies": {
+    "ut-tools": "^5.19.0"
+  },
+  "scripts": {
+    "lint": "ut-lint .",
+    "release": "ut-release",
+    "changelog": "ut-changelog",
+    "check": "ut-check",
+    "cover": "ut-cover",
+    "lint-js": "ut-lint-js .",
+    "postpublish": "ut-postpublish",
+    "postversion": "ut-postversion",
+    "precommit": "ut-precommit",
+    "prepublish": "ut-prepublish",
+    "prepush": "ut-prepush",
+    "pretest": "ut-pretest",
+    "preversion": "ut-preversion",
+    "test": "ut-test",
+    "version": "ut-version",
+    "jenkins": "ut-jenkins",
+    "gitlab": "ut-gitlab"
+  },
+  "keywords": [
+    "service",
+    "discovery",
+    "registry"
+  ],
+  "author": "Stamen Peev",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softwaregroup-bg/ut-port-registry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/softwaregroup-bg/ut-port-registry/issues"
+  },
+  "homepage": "https://github.com/softwaregroup-bg/ut-port-registry#readme"
+}
