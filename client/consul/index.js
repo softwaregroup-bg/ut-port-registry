@@ -10,7 +10,7 @@ class ConsulClient extends Client {
         return this.consul.agent.service.register(config);
     }
 
-    serviceList(criteria) {
+    serviceFetch(criteria) {
         return this.consul.catalog.service.nodes({
             service: criteria.name
         })
