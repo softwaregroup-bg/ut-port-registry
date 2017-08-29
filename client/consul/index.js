@@ -6,22 +6,22 @@ class ConsulClient extends Client {
         this.consul = consul(Object.assign({}, config, {promisify: true}));
     }
 
-    addService(config) {
+    serviceAdd(config) {
         return this.consul.agent.service.register(config);
     }
 
-    getService(id) {
-        return this.consul.agent.service.list()
-            .then((list) => {
-                let service = list[id];
-                if (!service) {
-                    return null;
-                }
+    serviceList(criteria) {
+        return this.consul.catalog.service.nodes({
+            service: criteria.name
+        })
+        .then((services) => {
+            return services.map((service) => {
                 return {
-                    address: service.Address,
-                    port: service.Port
-                };
-            });
+                    host: service.ServiceAddress,
+                    port: service.ServicePort
+                }
+            })
+        });
     }
 };
 

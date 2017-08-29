@@ -1,7 +1,7 @@
 class Client {
-    constructor(config) {
-        this.config = config;
-    }
+    // constructor(config) {
+    //     // validate config if necessary
+    // }
 
     init() {
         return Promise.resolve();
@@ -9,10 +9,10 @@ class Client {
 
     start() {
         // validate whether essantial methods had been implemented
-        if (typeof this.addService !== 'function') {
-            return Promise.reject(new Error('addService must be implemented'));
-        } else if (typeof this.getService !== 'function') {
-            return Promise.reject(new Error('getService must be implemented'));
+        if (typeof this.serviceAdd !== 'function') {
+            return Promise.reject(new Error('serviceAdd must be implemented'));
+        } else if (typeof this.serviceList !== 'function') {
+            return Promise.reject(new Error('serviceList must be implemented'));
         }
         return Promise.resolve();
     }
@@ -29,10 +29,10 @@ class Client {
         return {
             service: {
                 add: (config) => {
-                    return this.addService(config);
+                    return this.serviceAdd(config || {});
                 },
-                get: (id) => {
-                    return this.getService(id);
+                list: (criteria) => {
+                    return this.serviceList(criteria || {});
                 }
             }
         };
