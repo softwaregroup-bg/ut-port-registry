@@ -1,3 +1,13 @@
+<a name="0.0.6"></a>
+## [0.0.6](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.0.5...v0.0.6) (2017-08-29)
+
+
+### Bug Fixes
+
+* unify service add/list api ([4c85a21](https://github.com/softwaregroup-bg/ut-port-registry/commit/4c85a21))
+
+
+
 <a name="0.0.5"></a>
 ## 0.0.5 (2017-08-28)
 
