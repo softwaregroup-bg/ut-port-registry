@@ -28,7 +28,7 @@ class ConsulClient extends Client {
                     if (criteriaKeys.every(key => {
                         return service.ServiceTags.find(tag => {
                             return tag === `${key}=${criteria[key]}`;
-                        })
+                        });
                     })) {
                         all.push(service);
                     }
@@ -40,8 +40,8 @@ class ConsulClient extends Client {
                 return {
                     host: service.ServiceAddress,
                     port: service.ServicePort
-                }
-            })
+                };
+            });
         });
     }
 };
