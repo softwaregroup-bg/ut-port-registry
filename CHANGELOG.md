@@ -1,3 +1,13 @@
+<a name="0.0.7"></a>
+## [0.0.7](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.0.6...v0.0.7) (2017-08-29)
+
+
+### Bug Fixes
+
+* rename service.list to service.fetch ([a5bfcdf](https://github.com/softwaregroup-bg/ut-port-registry/commit/a5bfcdf))
+
+
+
 <a name="0.0.6"></a>
 ## [0.0.6](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.0.5...v0.0.6) (2017-08-29)
 
