@@ -1,12 +1,29 @@
 const consul = require('consul');
 const Client = require('../index');
+const getServiceDefinition = (service) => {
+    return {
+        host: service.ServiceAddress,
+        port: service.ServicePort
+    };
+};
 class ConsulClient extends Client {
     init() {
-        this.consul = consul({
-            host: this.config.host || '127.0.0.1',
-            port: this.config.port || '8500',
-            promisify: true
-        });
+        this.consul = consul(Object.assign(
+            // defaults
+            {
+                host: '127.0.0.1',
+                port: '8500',
+                secure: false,
+                ca: [],
+                test: 123
+            },
+            // custom
+            this.config,
+            // override
+            {
+                promisify: true
+            }
+        ));
         return this.consul.agent.self();
     }
 
@@ -24,24 +41,18 @@ class ConsulClient extends Client {
             delete criteria.name;
             let criteriaKeys = Object.keys(criteria);
             if (criteriaKeys.length) {
-                var result = services.reduce((all, service) => {
+                return services.reduce((all, service) => {
                     if (criteriaKeys.every(key => {
                         return service.ServiceTags.find(tag => {
                             return tag === `${key}=${criteria[key]}`;
                         });
                     })) {
-                        all.push(service);
+                        all.push(getServiceDefinition(service));
                     }
                     return all;
                 }, []);
-                return result;
             }
-            return services.map((service) => {
-                return {
-                    host: service.ServiceAddress,
-                    port: service.ServicePort
-                };
-            });
+            return services.map(getServiceDefinition);
         });
     }
 };
