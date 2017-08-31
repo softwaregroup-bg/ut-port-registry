@@ -7,7 +7,8 @@ class RegistryPort extends ScriptPort {
             id: 'registry',
             logLevel: 'debug',
             type: 'consul',
-            config: {}
+            config: {},
+            context: {}
         });
     }
 
@@ -17,7 +18,7 @@ class RegistryPort extends ScriptPort {
             default:
                 Client = require('./client/consul');
         }
-        let client = new Client(this.config.config);
+        let client = new Client(this.config.config, this.config.context);
         this.bus.registerLocal(client.getPublicApi(), this.config.id);
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => {

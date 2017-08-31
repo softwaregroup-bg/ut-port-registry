@@ -1,41 +1,47 @@
 class Client {
-    // constructor(config) {
-    //     // validate config if necessary
-    // }
+    constructor(config = {}, context = {}) {
+        // validations
+        // check whether essantial methods had been implemented
+        if (typeof this.serviceAdd !== 'function') {
+            throw new Error('serviceAdd must be implemented');
+        }
+        if (typeof this.serviceFetch !== 'function') {
+            throw new Error('serviceFetch must be implemented');
+        }
+        this.config = config;
+        this.context = context;
+        this.getPublicApi = () => {
+            return {
+                service: {
+                    add: (config) => {
+                        return this.serviceAdd(config || {});
+                    },
+                    fetch: (criteria) => {
+                        return this.serviceFetch(criteria || {});
+                    }
+                }
+            };
+        };
+    }
 
     init() {
+        // can be overriden by child class
         return Promise.resolve();
     }
 
     start() {
-        // validate whether essantial methods had been implemented
-        if (typeof this.serviceAdd !== 'function') {
-            return Promise.reject(new Error('serviceAdd must be implemented'));
-        } else if (typeof this.serviceFetch !== 'function') {
-            return Promise.reject(new Error('serviceFetch must be implemented'));
-        }
+        // can be overriden by child class
         return Promise.resolve();
     }
 
     ready() {
+        // can be overriden by child class
         return Promise.resolve();
     }
 
     stop() {
+        // can be overriden by child class
         return Promise.resolve();
-    }
-
-    getPublicApi() {
-        return {
-            service: {
-                add: (config) => {
-                    return this.serviceAdd(config || {});
-                },
-                fetch: (criteria) => {
-                    return this.serviceFetch(criteria || {});
-                }
-            }
-        };
     }
 }
 
