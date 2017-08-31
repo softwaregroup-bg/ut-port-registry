@@ -38,7 +38,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/softwaregroup-bg/ut-port-registry.git"
+    "url": "git@github.com:softwaregroup-bg/ut-port-registry.git"
   },
   "bugs": {
     "url": "https://github.com/softwaregroup-bg/ut-port-registry/issues"
