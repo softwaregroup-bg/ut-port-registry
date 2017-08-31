@@ -34,11 +34,14 @@ class ConsulClient extends Client {
 
     serviceFetch(criteria) {
         return this.consul.health.service({
-            service: criteria.name,
-            passing: criteria.passing
+            service: criteria.service,
+            passing: criteria.passing,
+            dc: criteria.dc
         })
         .then((records) => {
-            delete criteria.name;
+            delete criteria.service;
+            delete criteria.passing;
+            delete criteria.dc;
             let criteriaKeys = Object.keys(criteria);
             if (criteriaKeys.length) {
                 return records.reduce((all, record) => {
