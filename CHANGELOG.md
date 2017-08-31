@@ -1,3 +1,22 @@
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.0.7...v0.1.0) (2017-08-31)
+
+
+### Bug Fixes
+
+* abstract serviceDefinition in separate function and improve configuration bootstrap ([a58edab](https://github.com/softwaregroup-bg/ut-port-registry/commit/a58edab))
+* add context argument to registry client ([3e574b0](https://github.com/softwaregroup-bg/ut-port-registry/commit/3e574b0))
+* linting ([cc1004d](https://github.com/softwaregroup-bg/ut-port-registry/commit/cc1004d))
+* remove unused property ([2c60f6a](https://github.com/softwaregroup-bg/ut-port-registry/commit/2c60f6a))
+* use health endpoint so that the client can opt-in to query healthy or unhealthy services only ([de15b54](https://github.com/softwaregroup-bg/ut-port-registry/commit/de15b54))
+
+
+### Features
+
+* add possibility to query services by datacenter and do correct formatting before iterrating through tags ([c381d28](https://github.com/softwaregroup-bg/ut-port-registry/commit/c381d28))
+
+
+
 <a name="0.0.7"></a>
 ## [0.0.7](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.0.6...v0.0.7) (2017-08-29)
 
