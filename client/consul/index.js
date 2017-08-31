@@ -1,9 +1,9 @@
 const consul = require('consul');
 const Client = require('../index');
-const getServiceDefinition = (service) => {
+const getServiceDefinition = (record) => {
     return {
-        host: service.ServiceAddress,
-        port: service.ServicePort
+        host: record.Service.Address,
+        port: record.Service.Port
     };
 };
 class ConsulClient extends Client {
@@ -33,25 +33,26 @@ class ConsulClient extends Client {
     }
 
     serviceFetch(criteria) {
-        return this.consul.catalog.service.nodes({
-            service: criteria.name
+        return this.consul.health.service({
+            service: criteria.name,
+            passing: criteria.passing
         })
-        .then((services) => {
+        .then((records) => {
             delete criteria.name;
             let criteriaKeys = Object.keys(criteria);
             if (criteriaKeys.length) {
-                return services.reduce((all, service) => {
+                return records.reduce((all, record) => {
                     if (criteriaKeys.every(key => {
-                        return service.ServiceTags.find(tag => {
+                        return record.Service.Tags.find(tag => {
                             return tag === `${key}=${criteria[key]}`;
                         });
                     })) {
-                        all.push(getServiceDefinition(service));
+                        all.push(getServiceDefinition(record));
                     }
                     return all;
                 }, []);
             }
-            return services.map(getServiceDefinition);
+            return records.map(getServiceDefinition);
         });
     }
 };
