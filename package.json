@@ -8,7 +8,7 @@
     "ut-port-script": "^5.5.6"
   },
   "devDependencies": {
-    "ut-tools": "^5.19.0"
+    "ut-tools": "^5.19.2"
   },
   "scripts": {
     "lint": "ut-lint .",
