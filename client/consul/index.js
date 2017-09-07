@@ -1,13 +1,16 @@
 const consul = require('consul');
 const Client = require('../index');
+const Watcher = require('./Watcher');
 const getServiceDefinition = (record) => {
     return {
         host: record.Service.Address,
-        port: record.Service.Port
+        port: record.Service.Port,
+        id: record.Service.Id
     };
 };
 class ConsulClient extends Client {
     init() {
+        this.watchers = {};
         this.consul = consul(Object.assign(
             // defaults
             {
@@ -23,7 +26,29 @@ class ConsulClient extends Client {
                 promisify: true
             }
         ));
+        var watch = this.consul.watch({
+            method: this.consul.health.service,
+            options: {
+                service: 'dfsp-account',
+                passing: true
+            }
+        });
+        watch.on('change', function(data, res) {
+          console.log('data:', data);
+        });
+
+        watch.on('error', function(err) {
+          console.log('error:', err);
+        });
+
         return this.consul.agent.self();
+    }
+
+    stop() {
+        Object.keys(this.watchers).forEach((key) => {
+            this.watchers[key].stop();
+        });
+        return super.stop();
     }
 
     serviceAdd(config) {
@@ -33,18 +58,15 @@ class ConsulClient extends Client {
     }
 
     serviceFetch(criteria) {
-        return this.consul.health.service({
-            service: criteria.service,
-            passing: criteria.passing,
-            dc: criteria.dc
-        })
-        .then((records) => {
+        var watcher = this.watchers[criteria.service];
+        if (!watcher) {
+            watcher = this.watchers[criteria.service] = new Watcher(this.consul, criteria.service);
+        }
+        return watcher.services.then((data) => {
             delete criteria.service;
-            delete criteria.passing;
-            delete criteria.dc;
             let criteriaKeys = Object.keys(criteria);
             if (criteriaKeys.length) {
-                return records.reduce((all, record) => {
+                return data.reduce((all, record) => {
                     if (criteriaKeys.every(key => {
                         return record.Service.Tags.find(tag => {
                             return tag === `${key}=${criteria[key]}`;
@@ -55,7 +77,7 @@ class ConsulClient extends Client {
                     return all;
                 }, []);
             }
-            return records.map(getServiceDefinition);
+            return data.map(getServiceDefinition);
         });
     }
 };
