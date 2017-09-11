@@ -1,3 +1,13 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.1.1...v0.1.2) (2017-09-11)
+
+
+### Bug Fixes
+
+* return promise correctly from init method ([0a2083e](https://github.com/softwaregroup-bg/ut-port-registry/commit/0a2083e))
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.1.0...v0.1.1) (2017-09-04)
 
