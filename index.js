@@ -27,7 +27,7 @@ class RegistryPort extends ScriptPort {
                     .then(() => super[method]());
             };
         });
-        return client.init(() => super.init());
+        return client.init().then(() => super.init());
     }
 }
 
