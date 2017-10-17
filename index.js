@@ -1,12 +1,13 @@
-const ScriptPort = require('ut-port-script');
+const HttpPort = require('ut-port-jsonrpc');
+const cache = require('ut-cache');
 
-class RegistryPort extends ScriptPort {
+class RegistryPort extends HttpPort {
     constructor() {
         super();
         Object.assign(this.config, {
             id: 'registry',
             logLevel: 'debug',
-            type: 'consul',
+            type: 'ut',
             config: {},
             context: {}
         });
@@ -15,10 +16,13 @@ class RegistryPort extends ScriptPort {
     init() {
         let Client;
         switch (this.config.type) {
-            default:
+            case 'consul':
                 Client = require('./client/consul');
+                break;
+            default:
+                Client = require('./client/ut');
         }
-        let client = new Client(this.config.config, this.config.context);
+        let client = new Client(this.bus, this.config, this.config.context);
         this.bus.registerLocal(client.getPublicApi(), this.config.id);
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => {
@@ -27,7 +31,13 @@ class RegistryPort extends ScriptPort {
                     .then(() => super[method]());
             };
         });
-        return client.init().then(() => super.init());
+
+        this.config.cache = cache;
+
+        return Promise.resolve()
+            .then(() => cache.init(this.bus))
+            .then(() => client.init())
+            .then(() => super.init());
     }
 }
 

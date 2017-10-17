@@ -1,5 +1,5 @@
 class Client {
-    constructor(config = {}, context = {}) {
+    constructor(bus = {}, config = {}, context = {}) {
         // validations
         // check whether essantial methods had been implemented
         if (typeof this.serviceAdd !== 'function') {
@@ -8,6 +8,7 @@ class Client {
         if (typeof this.serviceFetch !== 'function') {
             throw new Error('serviceFetch must be implemented');
         }
+        this.bus = bus;
         this.config = config;
         this.context = context;
         this.getPublicApi = () => {
