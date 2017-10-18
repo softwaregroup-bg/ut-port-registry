@@ -19,8 +19,7 @@ class UtClient extends Client {
                     jar: true,
                     strictSSL: false
                 },
-                parseResponse: false,
-                ws: []
+                parseResponse: false
             },
             // custom
             this.config,
@@ -28,6 +27,7 @@ class UtClient extends Client {
             {}
         );
         utCache.init(bus);
+        this.ws = [];
         this.cache = utCache.collection('registry');
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => this.client[method];
@@ -41,23 +41,23 @@ class UtClient extends Client {
     }
 
     serviceFetch(criteria) {
-        const initWs = (context, wss, service) => {
-            context.config.ws[service] = new WebSocket(`ws://${wss.address}/serviceRegistry/${service}`);
+        const initWs = (wss, service) => {
+            this.ws[service] = new WebSocket(`ws://${wss.address}/serviceRegistry/${service}`);
 
-            context.config.ws[service].on('message', (data) => {
+            this.ws[service].on('message', (data) => {
                 let msg = JSON.parse(data);
 
                 if (msg && msg.service !== undefined) {
                     if (msg.data !== undefined && msg.data.length > 0) {
-                        return context.config.cache.set(msg.service, msg.data);
+                        return this.cache.set(msg.service, msg.data);
                     } else {
-                        return context.config.cache.del(msg.service);
+                        return this.cache.del(msg.service);
                     }
                 }
             });
 
-            context.config.ws[service].on('close', () => {
-                return context.config.cache.del(service);
+            this.ws[service].on('close', () => {
+                return this.cache.del(service);
             });
         };
 
@@ -72,7 +72,7 @@ class UtClient extends Client {
                             return result.records;
                         }
 
-                        initWs(this, result.wss, criteria.service);
+                        initWs(result.wss, criteria.service);
                         return this.cache.set(criteria.service, result.records);
                     });
             })
