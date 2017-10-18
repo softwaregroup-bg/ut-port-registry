@@ -7,7 +7,6 @@ class RegistryPort extends HttpPort {
         Object.assign(this.config, {
             id: 'registry',
             logLevel: 'debug',
-            type: 'ut',
             config: {},
             context: {}
         });
@@ -16,11 +15,11 @@ class RegistryPort extends HttpPort {
     init() {
         let Client;
         switch (this.config.type) {
-            case 'consul':
-                Client = require('./client/consul');
+            case 'ut':
+                Client = require('./client/ut');
                 break;
             default:
-                Client = require('./client/ut');
+                Client = require('./client/consul');
         }
         let client = new Client(this.bus, this.config, this.config.context);
         this.bus.registerLocal(client.getPublicApi(), this.config.id);

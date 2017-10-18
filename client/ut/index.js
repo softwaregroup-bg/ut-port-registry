@@ -1,4 +1,6 @@
 const Client = require('../index');
+const WebSocket = require('ws');
+
 const getServiceDefinition = (record) => {
     return {
         host: record.Service.Address,
@@ -12,7 +14,6 @@ class UtClient extends Client {
             this.config,
             // override
             {
-                url: !this.config.url ? 'http://127.0.0.1:8005' : this.config.url,
                 method: 'post',
                 namespace: [
                     'registry'
@@ -22,7 +23,8 @@ class UtClient extends Client {
                     jar: true,
                     strictSSL: false
                 },
-                parseResponse: false
+                parseResponse: false,
+                ws: []
             }
         );
         this.config.cache = this.config.cache.collection('registry');
@@ -35,6 +37,26 @@ class UtClient extends Client {
     }
 
     serviceFetch(criteria) {
+        const initWs = (context, wss, service) => {
+            context.config.ws[service] = new WebSocket(`ws://${wss.address}/serviceRegistry/${service}`);
+
+            context.config.ws[service].on('message', (data) => {
+                let msg = JSON.parse(data);
+
+                if (msg && msg.service !== undefined) {
+                    if (msg.data !== undefined && msg.data.length > 0) {
+                        return context.config.cache.set(msg.service, msg.data);
+                    } else {
+                        return context.config.cache.del(msg.service);
+                    }
+                }
+            });
+
+            context.config.ws[service].on('close', () => {
+                return context.config.cache.del(service);
+            });
+        };
+
         return this.config.cache.get(criteria.service)
             .then((records) => {
                 if (records && records.length) {
@@ -42,8 +64,13 @@ class UtClient extends Client {
                 }
 
                 return this.bus.importMethod('registry.service.serviceFetch')(criteria)
-                    .then((records) => {
-                        return this.config.cache.set(criteria.service, records);
+                    .then((result) => {
+                        if (result && result.records && result.records.length === 0) {
+                            return result.records;
+                        }
+
+                        initWs(this, result.wss, criteria.service);
+                        return this.config.cache.set(criteria.service, result.records);
                     });
             })
             .then((records) => {
