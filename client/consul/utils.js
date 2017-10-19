@@ -1,5 +1,5 @@
-const getServiceDefinition = (record) => {
-    return {
+const getServiceDefinition = (record, raw) => {
+    return raw ? record : {
         host: record.Service.Address,
         port: record.Service.Port
     };
@@ -12,6 +12,8 @@ module.exports = {
         return definition;
     },
     decode: (records = [], criteria = {}) => {
+        let raw = criteria.raw;
+        delete criteria.raw;
         delete criteria.service;
         delete criteria.passing;
         delete criteria.dc;
@@ -23,11 +25,11 @@ module.exports = {
                         return tag === `${key}=${criteria[key]}`;
                     });
                 })) {
-                    all.push(getServiceDefinition(record));
+                    all.push(getServiceDefinition(record, raw));
                 }
                 return all;
             }, []);
         }
-        return records.map(getServiceDefinition);
+        return records.map((record) => getServiceDefinition(record, raw));
     }
 };
