@@ -31,10 +31,11 @@ class UtClient extends Client {
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => this.client[method];
         });
-        this.client.send = (msg) => {
-            return this.client.exec(this.client.config.send(msg), {})
+        this.client.send = (msg, $meta) => {
+            $meta.mtid = 'request';
+            return this.client.exec(this.client.config.send(msg, $meta), $meta)
                 .then((response) => {
-                    return this.client.config.receive(response);
+                    return this.client.config.receive(response, $meta);
                 });
         };
         return this.client.init();
@@ -42,7 +43,7 @@ class UtClient extends Client {
 
     serviceAdd(definition) {
         var msg = consulUtils.encode(definition, this.context);
-        return this.client.send(msg);
+        return this.client.send(msg, {method: 'registry.service.add'});
     }
 
     initWs(wss, service) {
@@ -68,7 +69,7 @@ class UtClient extends Client {
                 if (records && records.length) {
                     return records;
                 }
-                return this.client.send(criteria)
+                return this.client.send(criteria, {method: 'registry.service.add'})
                     .then((result) => {
                         if (result && result.records && result.records.length === 0) {
                             return result.records;
