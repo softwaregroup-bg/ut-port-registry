@@ -15,6 +15,9 @@ class RegistryPort extends ScriptPort {
     init() {
         let Client;
         switch (this.config.type) {
+            case 'ut':
+                Client = require('./client/ut');
+                break;
             default:
                 Client = require('./client/consul');
         }
@@ -27,7 +30,7 @@ class RegistryPort extends ScriptPort {
                     .then(() => super[method]());
             };
         });
-        return client.init(this.bus).then(() => super.init());
+        return client.init(this).then(() => super.init());
     }
 }
 

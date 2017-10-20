@@ -1,10 +1,10 @@
 const Client = require('../index');
-const consulUtils = require('./consul/utils');
+const consulUtils = require('../consul/utils');
 const WebSocket = require('ws');
 const UtPortJsonRpc = require('ut-port-jsonrpc');
-const utCache = require('ut-cache');
+const cache = require('../../cache');
 class UtClient extends Client {
-    init(bus) {
+    init(port) {
         this.client = new UtPortJsonRpc();
         Object.assign(
             this.client.config,
@@ -25,9 +25,8 @@ class UtClient extends Client {
                 parseResponse: false
             }
         );
-        utCache.init(bus);
         this.ws = [];
-        this.cache = utCache.collection('registry');
+        this.cache = cache.init(port.bus);
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => this.client[method];
         });
@@ -38,7 +37,7 @@ class UtClient extends Client {
                     return this.client.config.receive(response, $meta);
                 });
         };
-        return this.client.init();
+        return Promise.resolve(this.client.init());
     }
 
     serviceAdd(definition) {
@@ -69,7 +68,7 @@ class UtClient extends Client {
                 if (records && records.length) {
                     return records;
                 }
-                return this.client.send(criteria, {method: 'registry.service.add'})
+                return this.client.send(criteria, {method: 'registry.service.fetch'})
                     .then((result) => {
                         if (result && result.records && result.records.length === 0) {
                             return result.records;
