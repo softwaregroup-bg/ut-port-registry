@@ -1,6 +1,6 @@
 const consul = require('consul');
-const utils = require('utils');
-const Client = require('../index');
+const utils = require('./utils');
+const Client = require('../client');
 class Consul extends Client {
     init() {
         this.consul = consul(Object.assign(

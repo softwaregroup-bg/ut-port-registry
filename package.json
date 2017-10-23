@@ -35,7 +35,7 @@
     "registry"
   ],
   "author": "Stamen Peev",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:softwaregroup-bg/ut-port-registry.git"

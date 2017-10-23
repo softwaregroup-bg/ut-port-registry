@@ -32,10 +32,9 @@ module.exports = {
         }
         return records.map((record) => getServiceDefinition(record, raw));
     },
-    compare: function(service, data, registryCache) {
+    compare: function(service, data, cache) {
         return Promise.resolve()
-        .then(() => registryCache.get(service))
-        .then((cache) => {
+        .then(() => {
             if (Array.isArray(cache) && Array.isArray(data) && data.length !== cache.length) {
                 return true;
             }

@@ -1,6 +1,7 @@
 const EventEmitter = require('events');
+let cache = {};
 class Client extends EventEmitter {
-    constructor(config = {}, context = {}) {
+    constructor(config = {}, context = {}, options = {}) {
         super();
         // validations
         // check whether essantial methods had been implemented
@@ -12,6 +13,7 @@ class Client extends EventEmitter {
         }
         this.config = config;
         this.context = context;
+        this.options = options;
         this.getPublicApi = () => {
             return {
                 service: {
@@ -41,9 +43,19 @@ class Client extends EventEmitter {
         return Promise.resolve();
     }
 
-    stop() {
+    stop(sad) {
         // can be overriden by child class
         return Promise.resolve();
+    }
+
+    getCache(key) {
+        return Promise.resolve(cache[key]);
+    }
+
+    setCache(key, value) {
+        cache[key] = value;
+
+        return Promise.resolve(value);
     }
 }
 

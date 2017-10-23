@@ -5,15 +5,17 @@ const clients = {
 
 const defaultConfig = {
     type: 'consul',
+    options: {},
     config: {},
     context: {}
 };
 
-module.exports = (config) => {
-    let mergedConfig = Object.assign({}, defaultConfig, config);
-    let Constructor = clients(mergedConfig.type);
+module.exports = (clientConfig) => {
+    let config = Object.assign({}, defaultConfig, clientConfig);
+    config.type = config.options.watch ? `${config.type}Watch` : config.type;
+    let Constructor = clients[config.type];
     if (!Constructor) {
-        throw new Error(`Uknown registry type: ${mergedConfig.type}! Available types: ${Object.keys(clients).join(', ')}`);
+        throw new Error(`Uknown registry type: ${config.type}! Available types: ${Object.keys(clients).join(', ')}`);
     }
-    return new Constructor(config.config, config.context);
+    return new Constructor(config.config, config.context, config.options);
 };

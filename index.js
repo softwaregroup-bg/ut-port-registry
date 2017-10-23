@@ -7,7 +7,6 @@ class RegistryPort extends ScriptPort {
         Object.assign(this.config, {
             id: 'registry',
             logLevel: 'debug',
-            type: 'consul',
             config: {},
             context: {}
         });
@@ -23,6 +22,13 @@ class RegistryPort extends ScriptPort {
                     .then(() => super[method]());
             };
         });
+
+        client.on('change', (data) => {
+            if (client.options.watchMethod !== undefined) {
+                return this.bus.importMethod(client.options.watchMethod)(data);
+            }
+        });
+
         return client.init().then(() => super.init());
     }
 }

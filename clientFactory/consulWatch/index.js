@@ -1,9 +1,7 @@
 const Consul = require('../consul');
-const utils = require('./consul/utils');
-const cache = require('../cache');
+const utils = require('../consul/utils');
 class ConsulWatch extends Consul {
     init() {
-        this.cache = cache();
         this.watchers = {};
         return super.init();
     }
@@ -16,15 +14,12 @@ class ConsulWatch extends Consul {
             }
         });
         this.watchers[service].on('change', (data) => {
-            return this.cache.get(service)
+            return this.getCache(service)
                 .then((cache) => {
-                    if (utils.compare(service, data)) {
-                        return this.cache.set(service, data)
-                            .then(() => {
-                                return this.log.info && this.log.info(data);
-                            })
-                            .catch((e) => {
-                                return this.log.error && this.log.error(e);
+                    if (utils.compare(service, data, cache)) {
+                        return this.setCache(service, data)
+                            .then((data) => {
+                                return this.emit('change', {service: service, data: data});
                             });
                     }
                     return cache;
@@ -33,9 +28,9 @@ class ConsulWatch extends Consul {
     }
 
     serviceFetch(criteria) {
-        return this.cache.get(criteria.service)
+        return this.getCache(criteria.service)
             .then((records) => {
-                if (records !== null) {
+                if (records !== undefined) {
                     return records;
                 }
                 return super.serviceFetch({
@@ -46,7 +41,7 @@ class ConsulWatch extends Consul {
                     if (!records.length) {
                         return records;
                     }
-                    return this.cache.set(criteria.service, records)
+                    return this.setCache(criteria.service, records)
                         .then((records) => {
                             this.setWatcher(criteria.service);
                             return records;
