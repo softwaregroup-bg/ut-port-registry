@@ -1,4 +1,5 @@
 const ScriptPort = require('ut-port-script');
+const clientFactory = require('./clientFactory');
 
 class RegistryPort extends ScriptPort {
     constructor() {
@@ -13,12 +14,7 @@ class RegistryPort extends ScriptPort {
     }
 
     init() {
-        let Client;
-        switch (this.config.type) {
-            default:
-                Client = require('./client/consul');
-        }
-        let client = new Client(this.config.config, this.config.context);
+        let client = clientFactory(this.config.client);
         this.bus.registerLocal(client.getPublicApi(), this.config.id);
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => {

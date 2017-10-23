@@ -1,5 +1,7 @@
-class Client {
+const EventEmitter = require('events');
+class Client extends EventEmitter {
     constructor(config = {}, context = {}) {
+        super();
         // validations
         // check whether essantial methods had been implemented
         if (typeof this.serviceAdd !== 'function') {
@@ -13,11 +15,11 @@ class Client {
         this.getPublicApi = () => {
             return {
                 service: {
-                    add: (config) => {
-                        return this.serviceAdd(config || {});
+                    add: (config = {}) => {
+                        return this.serviceAdd(config);
                     },
-                    fetch: (criteria) => {
-                        return this.serviceFetch(criteria || {});
+                    fetch: (criteria = {}) => {
+                        return this.serviceFetch(criteria);
                     }
                 }
             };
