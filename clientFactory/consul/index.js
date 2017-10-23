@@ -23,7 +23,8 @@ class Consul extends Client {
 
     serviceAdd(definition) {
         var msg = utils.encode(definition, this.context);
-        return this.consul.agent.service.register(msg);
+        return this.consul.agent.service.register(msg)
+            .then(() => Promise.resolve({success: true}));
     }
 
     serviceFetch(criteria) {

@@ -1,6 +1,8 @@
 const clients = {
     consul: require('./consul'),
-    consulWatch: require('./consulWatch')
+    consulWatch: require('./consulWatch'),
+    ut: require('./ut'),
+    utWatch: require('./utWatch')
 };
 
 const defaultConfig = {

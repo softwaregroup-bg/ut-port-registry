@@ -43,7 +43,7 @@ class Client extends EventEmitter {
         return Promise.resolve();
     }
 
-    stop(sad) {
+    stop() {
         // can be overriden by child class
         return Promise.resolve();
     }
