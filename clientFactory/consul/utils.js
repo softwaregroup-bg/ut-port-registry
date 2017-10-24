@@ -8,7 +8,7 @@ const getServiceDefinition = (record, raw) => {
 module.exports = {
     encode: (definition = {}, context = {}) => {
         let mergedContext = Object.assign({}, context, definition.context);
-        definition.tags = Object.keys(context).map(key => `${key}=${mergedContext[key]}`);
+        definition.tags = Object.keys(mergedContext).map(key => `${key}=${mergedContext[key]}`);
         return definition;
     },
     decode: (records = [], criteria = {}) => {
@@ -41,65 +41,22 @@ module.exports = {
 
             let compareResult = remoteData.some((remote) => {
                 let local = localData.find((local) => { return local.Service.ID === remote.Service.ID; });
-
                 if (local === undefined) {
                     return true;
                 }
-
-                let serviceDiff = Object.keys(local.Service)
-                    .filter((key) => { return key !== 'CreateIndex' && key !== 'ModifyIndex' && key !== 'Tags'; })
-                    .reduce((diff, key) => {
-                        if (local.Service[key] === remote.Service[key]) {
-                            return diff;
-                        }
-
-                        // It is ok to overwrite the previous value.
-                        return [{
-                            [key]: remote.Service[key]
-                        }];
-                    }, {});
-
-                if (serviceDiff.length > 0) {
+                if (compareObj(local.Service, remote.Service, ['CreateIndex', 'ModifyIndex', 'Tags'])) {
                     return true;
                 }
-
                 if (local.Service.Tags.length !== remote.Service.Tags.length) {
                     return true;
                 }
-
-                let tagDiff = remote.Service.Tags.reduce((diff, value) => {
-                    if (local.Service.Tags.includes(value)) {
-                        return diff;
-                    }
-
-                    // It is ok to overwrite the previous value.
-                    return [value];
-                }, {});
-
-                if (tagDiff.length > 0) {
+                if (compareArr(local.Service.Tags, remote.Service.Tags)) {
                     return true;
                 }
-
-                let checksDiff = remote.Checks.reduce((diff, remoteEntry) => {
-                    let localEntry = local.Checks.find((entry) => { return entry.CheckID === remoteEntry.CheckID; });
-
-                    let d = Object.keys(localEntry)
-                        .filter((key) => { return key !== 'CreateIndex' && key !== 'ModifyIndex' && key !== 'ServiceTags'; })
-                        .reduce((diff, key) => {
-                            if (localEntry[key] === remoteEntry[key]) {
-                                return diff;
-                            }
-
-                            // It is ok to overwrite the previous value.
-                            return [{
-                                [key]: remoteEntry[key]
-                            }];
-                        }, {});
-
-                    return d;
-                }, {});
-
-                if (checksDiff.length > 0) {
+                if (local.Checks.length !== remote.Checks.length) {
+                    return true;
+                }
+                if (compareArrOfObjects(local.Checks, remote.Checks, ['CreateIndex', 'ModifyIndex', 'ServiceTags'])) {
                     return true;
                 }
             });
@@ -108,3 +65,22 @@ module.exports = {
         });
     }
 };
+
+function compareObj(localData, remoteData, excludeKey) {
+    return Object.keys(localData)
+        .filter((key) => { return !excludeKey.includes(key); })
+        .some((key) => { return localData[key] !== remoteData[key]; });
+}
+
+function compareArr(localData, remoteData) {
+    return localData.some((value) => {
+        return !remoteData.includes(value);
+    });
+}
+
+function compareArrOfObjects(localData, remoteData, excludeKey) {
+    return localData.some((local) => {
+        let remote = remoteData.find((entry) => { return entry.CheckID === local.CheckID; });
+        return compareObj(local, remote, excludeKey);
+    });
+}
