@@ -32,30 +32,30 @@ module.exports = {
         }
         return records.map((record) => getServiceDefinition(record, raw));
     },
-    compare: function(service, data, cache) {
+    compare: function(service, localData, remoteData) {
         return Promise.resolve()
         .then(() => {
-            if (Array.isArray(cache) && Array.isArray(data) && data.length !== cache.length) {
+            if (Array.isArray(localData) && Array.isArray(remoteData) && remoteData.length !== localData.length) {
                 return true;
             }
 
-            let compareResult = data.some((remoteData) => {
-                let localData = cache.find((localData) => { return localData.Service.ID === remoteData.Service.ID; });
+            let compareResult = remoteData.some((remote) => {
+                let local = localData.find((local) => { return local.Service.ID === remote.Service.ID; });
 
-                if (localData === undefined) {
+                if (local === undefined) {
                     return true;
                 }
 
-                let serviceDiff = Object.keys(localData.Service)
+                let serviceDiff = Object.keys(local.Service)
                     .filter((key) => { return key !== 'CreateIndex' && key !== 'ModifyIndex' && key !== 'Tags'; })
                     .reduce((diff, key) => {
-                        if (localData.Service[key] === remoteData.Service[key]) {
+                        if (local.Service[key] === remote.Service[key]) {
                             return diff;
                         }
 
                         // It is ok to overwrite the previous value.
                         return [{
-                            [key]: remoteData.Service[key]
+                            [key]: remote.Service[key]
                         }];
                     }, {});
 
@@ -63,12 +63,12 @@ module.exports = {
                     return true;
                 }
 
-                if (localData.Service.Tags.length !== remoteData.Service.Tags.length) {
+                if (local.Service.Tags.length !== remote.Service.Tags.length) {
                     return true;
                 }
 
-                let tagDiff = remoteData.Service.Tags.reduce((diff, value) => {
-                    if (localData.Service.Tags.includes(value)) {
+                let tagDiff = remote.Service.Tags.reduce((diff, value) => {
+                    if (local.Service.Tags.includes(value)) {
                         return diff;
                     }
 
@@ -80,8 +80,8 @@ module.exports = {
                     return true;
                 }
 
-                let checksDiff = remoteData.Checks.reduce((diff, remoteEntry) => {
-                    let localEntry = localData.Checks.find((entry) => { return entry.CheckID === remoteEntry.CheckID; });
+                let checksDiff = remote.Checks.reduce((diff, remoteEntry) => {
+                    let localEntry = local.Checks.find((entry) => { return entry.CheckID === remoteEntry.CheckID; });
 
                     let d = Object.keys(localEntry)
                         .filter((key) => { return key !== 'CreateIndex' && key !== 'ModifyIndex' && key !== 'ServiceTags'; })

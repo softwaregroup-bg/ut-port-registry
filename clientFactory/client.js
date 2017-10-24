@@ -54,7 +54,6 @@ class Client extends EventEmitter {
 
     setCache(key, value) {
         cache[key] = value;
-
         return Promise.resolve(value);
     }
 }

@@ -16,28 +16,30 @@ class UtWatch extends Ut {
                     return records;
                 }
                 return this.client.send(Object.assign(criteria, {raw: true}), {method: 'registry.service.fetch'})
-                    .then((result) => {
-                        if (result && result.records && result.records.length === 0) {
-                            return result.records;
+                    .then((data) => {
+                        if (data && data.records && data.records.length === 0) {
+                            return data.records;
                         }
 
-                        // TODO Fixme
-                        this.initWs(result.wss, criteria.service);
-                        return this.setCache(criteria.service, result);
+                        this.initWs(data.socketHost, criteria.service);
+                        return this.setCache(criteria.service, data.records);
                     });
             })
             .then((records) => {
+                criteria.raw = false;
                 return consulUtils.decode(records, criteria);
             });
     }
 
-    initWs(wss, service) {
-        this.ws[service] = new WebSocket(`ws://127.0.0.1:8005/serviceRegistry/${service}`); // TODO Fixme
+    initWs(host, service) {
+        let socketHost = host || this.config.url.match(/\/+(.*)/)[1];
+
+        this.ws[service] = new WebSocket(`ws://${socketHost}/serviceRegistry/${service}`);
         this.ws[service].on('message', (data) => {
             let msg = JSON.parse(data);
             if (msg && msg.service !== undefined) {
-                if (msg.data !== undefined && msg.data.length > 0) {
-                    return this.setCache(msg.service, msg.data);
+                if (msg.records !== undefined && msg.records.length > 0) {
+                    return this.setCache(msg.service, msg.records);
                 } else {
                     return this.setCache(msg.service, []);
                 }

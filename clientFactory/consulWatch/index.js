@@ -13,13 +13,13 @@ class ConsulWatch extends Consul {
                 service
             }
         });
-        this.watchers[service].on('change', (data) => {
+        this.watchers[service].on('change', (records) => {
             return this.getCache(service)
                 .then((cache) => {
-                    if (utils.compare(service, data, cache)) {
-                        return this.setCache(service, data)
+                    if (utils.compare(service, records, cache)) {
+                        return this.setCache(service, records)
                             .then((data) => {
-                                return this.emit('change', {service: service, data: data});
+                                return this.emit('change', {service: service, records: records});
                             });
                     }
                     return cache;

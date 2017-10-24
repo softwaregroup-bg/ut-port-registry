@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "consul": "^0.29.0",
-    "ut-port-script": "^5.5.6"
+    "ut-port-script": "^5.5.6",
+    "ut-port-jsonrpc": "^5.6.12",
+    "ws": "^3.2.0"
   },
   "devDependencies": {
     "ut-tools": "^5.19.2"
