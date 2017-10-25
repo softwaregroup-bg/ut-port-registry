@@ -56,7 +56,7 @@ module.exports = {
                 if (local.Checks.length !== remote.Checks.length) {
                     return true;
                 }
-                if (compareArrOfObjects(local.Checks, remote.Checks, ['CreateIndex', 'ModifyIndex', 'ServiceTags'])) {
+                if (compareArrOfObjects(local.Checks, remote.Checks, 'CheckID', ['CreateIndex', 'ModifyIndex', 'ServiceTags'])) {
                     return true;
                 }
             });
@@ -78,9 +78,9 @@ function compareArr(localData, remoteData) {
     });
 }
 
-function compareArrOfObjects(localData, remoteData, excludeKey) {
+function compareArrOfObjects(localData, remoteData, matchKey, excludeKey) {
     return localData.some((local) => {
-        let remote = remoteData.find((entry) => { return entry.CheckID === local.CheckID; });
+        let remote = remoteData.find((entry) => { return entry[matchKey] === local[matchKey]; });
         return compareObj(local, remote, excludeKey);
     });
 }
