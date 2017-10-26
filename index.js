@@ -18,14 +18,19 @@ class RegistryPort extends ScriptPort {
         ['start', 'ready', 'stop'].forEach((method) => {
             this[method] = () => {
                 return Promise.resolve()
-                    .then(() => client[method]())
+                    .then(() => client[method](this))
                     .then(() => super[method]());
             };
         });
 
         client.on('change', (data) => {
             if (client.options.watchMethod !== undefined) {
-                return this.bus.importMethod(client.options.watchMethod)(data);
+                return this.bus.importMethod(client.options.watchMethod)(data)
+                    .catch((error) => {
+                        if (this.log && this.log.error) {
+                            this.log.error(error);
+                        }
+                    });
             }
         });
 

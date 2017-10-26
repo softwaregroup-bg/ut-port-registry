@@ -33,8 +33,9 @@ class Client extends EventEmitter {
         return Promise.resolve();
     }
 
-    start() {
+    start(port) {
         // can be overriden by child class
+        this.log = port.log;
         return Promise.resolve();
     }
 

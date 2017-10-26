@@ -35,8 +35,10 @@ The registry port can be initialized in several different ways depending on the 
     "registry": {
         "client": {
             "type": "consul",
-            "host": "127.0.0.1",
-            "port": "8005"
+            "config": {
+                "host": "127.0.0.1",
+                "port": "8005"
+            }
         }
     }
 ```
@@ -53,8 +55,10 @@ Example configuration:
 ```json
 "client": {
     "type": "consul",
-    "host": "127.0.0.1",
-    "port": "8005"
+    "config": {
+        "host": "127.0.0.1",
+        "port": "8005"
+    }
 }
 ```
 
@@ -72,8 +76,10 @@ Example configuration:
         "watch": true,
         "watchMethod": "http.publish"
     },
-    "host": "127.0.0.1",
-    "port": "8005"
+    "config": {
+        "host": "127.0.0.1",
+        "port": "8005"
+    }
 }
 ```
 ##### Ut + Watch
@@ -89,8 +95,8 @@ Consider the following diagram:
           | Registry |                               +----------+
           +----------+                                    |
               |  |      Websocket                +--------+---------+
-              |  +------------------------------>|                  |
-              |         HTTP Request >           | Service Registry |
+              |  +-------------------------------|                  |
+              |         HTTP Request             | Service Registry |
               +--------------------------------->|                  |
                                                  +------------------+
 

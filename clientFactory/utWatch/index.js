@@ -1,5 +1,6 @@
 const Ut = require('../ut');
 const consulUtils = require('../consul/utils');
+const url = require('url');
 const WebSocket = require('ws');
 
 class UtWatch extends Ut {
@@ -32,16 +33,20 @@ class UtWatch extends Ut {
     }
 
     initWs(host, service) {
-        let socketHost = host || this.config.url.match(/\/+(.*)/)[1];
-
-        this.ws[service] = new WebSocket(`ws://${socketHost}/serviceRegistry/${service}`);
+        this.ws[service] = new WebSocket(`ws://${host || url.parse(this.config.url).host}/serviceRegistry/${service}`);
         this.ws[service].on('message', (data) => {
-            let msg = JSON.parse(data);
-            if (msg && msg.service !== undefined) {
-                if (msg.records !== undefined && msg.records.length > 0) {
-                    return this.setCache(msg.service, msg.records);
-                } else {
-                    return this.setCache(msg.service, []);
+            try {
+                let msg = JSON.parse(data);
+                if (msg && msg.service !== undefined) {
+                    if (msg.records !== undefined && msg.records.length > 0) {
+                        return this.setCache(msg.service, msg.records);
+                    } else {
+                        return this.setCache(msg.service, []);
+                    }
+                }
+            } catch (error) {
+                if (this.log && this.log.error) {
+                    this.log.error(error);
                 }
             }
         });

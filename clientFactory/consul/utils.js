@@ -33,36 +33,36 @@ module.exports = {
         return records.map((record) => getServiceDefinition(record, raw));
     },
     compare: function(service, localData, remoteData) {
-        return Promise.resolve()
-        .then(() => {
-            if (Array.isArray(localData) && Array.isArray(remoteData) && remoteData.length !== localData.length) {
+        if (!Array.isArray(localData) || !Array.isArray(remoteData)) {
+            return true;
+        }
+        if (remoteData.length !== localData.length) {
+            return true;
+        }
+
+        let compareResult = remoteData.some((remote) => {
+            let local = localData.find((local) => { return local.Service.ID === remote.Service.ID; });
+            if (local === undefined) {
                 return true;
             }
-
-            let compareResult = remoteData.some((remote) => {
-                let local = localData.find((local) => { return local.Service.ID === remote.Service.ID; });
-                if (local === undefined) {
-                    return true;
-                }
-                if (compareObj(local.Service, remote.Service, ['CreateIndex', 'ModifyIndex', 'Tags'])) {
-                    return true;
-                }
-                if (local.Service.Tags.length !== remote.Service.Tags.length) {
-                    return true;
-                }
-                if (compareArr(local.Service.Tags, remote.Service.Tags)) {
-                    return true;
-                }
-                if (local.Checks.length !== remote.Checks.length) {
-                    return true;
-                }
-                if (compareArrOfObjects(local.Checks, remote.Checks, 'CheckID', ['CreateIndex', 'ModifyIndex', 'ServiceTags'])) {
-                    return true;
-                }
-            });
-
-            return compareResult;
+            if (compareObj(local.Service, remote.Service, ['CreateIndex', 'ModifyIndex', 'Tags'])) {
+                return true;
+            }
+            if (local.Service.Tags.length !== remote.Service.Tags.length) {
+                return true;
+            }
+            if (compareArr(local.Service.Tags, remote.Service.Tags)) {
+                return true;
+            }
+            if (local.Checks.length !== remote.Checks.length) {
+                return true;
+            }
+            if (compareArrOfObjects(local.Checks, remote.Checks, 'CheckID', ['CreateIndex', 'ModifyIndex', 'ServiceTags'])) {
+                return true;
+            }
         });
+
+        return compareResult;
     }
 };
 

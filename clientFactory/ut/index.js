@@ -26,10 +26,6 @@ class UtClient extends ConsulWatch {
             }
         );
 
-        ['start', 'ready', 'stop'].forEach((method) => {
-            this[method] = () => this.client[method];
-        });
-
         this.client.send = (msg, $meta) => {
             $meta.mtid = 'request';
             return this.client.exec(this.client.config.send(msg, $meta), $meta)
