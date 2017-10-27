@@ -1,6 +1,6 @@
 {
   "name": "ut-port-registry",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "service discovery and data store",
   "main": "index.js",
   "dependencies": {

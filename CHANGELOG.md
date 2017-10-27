@@ -1,3 +1,27 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.1.2...v0.2.0) (2017-10-27)
+
+
+### Bug Fixes
+
+* add mergeWith dependency ([f027f91](https://github.com/softwaregroup-bg/ut-port-registry/commit/f027f91))
+* compare function, removed hardcoded constraint ([fb09cb2](https://github.com/softwaregroup-bg/ut-port-registry/commit/fb09cb2))
+* typo ([d1345f4](https://github.com/softwaregroup-bg/ut-port-registry/commit/d1345f4))
+* update ([823bde8](https://github.com/softwaregroup-bg/ut-port-registry/commit/823bde8))
+* ut service add & typo ([4b0fbb5](https://github.com/softwaregroup-bg/ut-port-registry/commit/4b0fbb5))
+
+
+### Features
+
+* readme ([7f30a8b](https://github.com/softwaregroup-bg/ut-port-registry/commit/7f30a8b))
+* refactor ([9b20e7d](https://github.com/softwaregroup-bg/ut-port-registry/commit/9b20e7d))
+* refactor ([8707218](https://github.com/softwaregroup-bg/ut-port-registry/commit/8707218))
+* refactor ([9e1381a](https://github.com/softwaregroup-bg/ut-port-registry/commit/9e1381a))
+* refactoring ([68ec748](https://github.com/softwaregroup-bg/ut-port-registry/commit/68ec748))
+* utWatch client and refactor ([500919c](https://github.com/softwaregroup-bg/ut-port-registry/commit/500919c))
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.1.1...v0.1.2) (2017-09-11)
 
