@@ -1,4 +1,5 @@
 const mergeWith = require('lodash.mergewith');
+const semver = require('semver');
 const getServiceDefinition = (record, raw) => {
     return raw ? record : {
         host: record.Service.Address,
@@ -23,6 +24,10 @@ module.exports = {
             return records.reduce((all, record) => {
                 if (criteriaKeys.every(key => {
                     return record.Service.Tags.find(tag => {
+                        if (key === 'version') {
+                            return semver.satisfies(semver.clean(tag.replace('version', 'v')), criteria[key]);
+                        }
+
                         return tag === `${key}=${criteria[key]}`;
                     });
                 })) {
