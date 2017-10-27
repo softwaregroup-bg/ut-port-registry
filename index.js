@@ -7,8 +7,12 @@ class RegistryPort extends ScriptPort {
         Object.assign(this.config, {
             id: 'registry',
             logLevel: 'debug',
-            config: {},
-            context: {}
+            client: {
+                type: 'consul',
+                config: {},
+                context: {},
+                options: {}
+            }
         });
     }
 

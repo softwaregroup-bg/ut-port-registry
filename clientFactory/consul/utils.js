@@ -1,3 +1,4 @@
+const mergeWith = require('lodash.mergeWith');
 const getServiceDefinition = (record, raw) => {
     return raw ? record : {
         host: record.Service.Address,
@@ -7,7 +8,7 @@ const getServiceDefinition = (record, raw) => {
 
 module.exports = {
     encode: (definition = {}, context = {}) => {
-        let mergedContext = Object.assign({}, context, definition.context);
+        let mergedContext = mergeWith({}, context, definition.context);
         definition.tags = Object.keys(mergedContext).map(key => `${key}=${mergedContext[key]}`);
         return definition;
     },

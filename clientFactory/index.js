@@ -1,3 +1,4 @@
+
 const clients = {
     consul: require('./consul'),
     consulWatch: require('./consulWatch'),
@@ -5,16 +6,10 @@ const clients = {
     utWatch: require('./utWatch')
 };
 
-const defaultConfig = {
-    type: 'consul',
-    options: {},
-    config: {},
-    context: {}
-};
-
-module.exports = (clientConfig) => {
-    let config = Object.assign({}, defaultConfig, clientConfig);
-    config.type = config.options.watch ? `${config.type}Watch` : config.type;
+module.exports = (config) => {
+    if (config.options.watch) {
+        config.type += 'Watch';
+    }
     let Constructor = clients[config.type];
     if (!Constructor) {
         throw new Error(`Unknown registry type: ${config.type}! Available types: consul, ut}`);
