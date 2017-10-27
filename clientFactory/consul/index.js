@@ -1,6 +1,7 @@
 const consul = require('consul');
 const utils = require('./utils');
 const Client = require('../client');
+const mergeWith = require('lodash.mergewith');
 class Consul extends Client {
     init() {
         this.consul = consul(Object.assign(
@@ -22,8 +23,8 @@ class Consul extends Client {
     }
 
     serviceAdd(definition) {
-        var msg = utils.encode(definition, this.context);
-        return this.consul.agent.service.register(msg)
+        mergeWith(definition.context, this.context);
+        return this.consul.agent.service.register(utils.encode(definition, this.context))
             .then(() => { return {success: true}; });
     }
 
