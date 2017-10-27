@@ -1,3 +1,18 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.2.0...v0.3.0) (2017-10-27)
+
+
+### Bug Fixes
+
+* version tag parsing ([2d06e0a](https://github.com/softwaregroup-bg/ut-port-registry/commit/2d06e0a))
+
+
+### Features
+
+* implemented semver ([42eec0c](https://github.com/softwaregroup-bg/ut-port-registry/commit/42eec0c))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.1.2...v0.2.0) (2017-10-27)
 

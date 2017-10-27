@@ -1,12 +1,12 @@
 {
   "name": "ut-port-registry",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "service discovery and data store",
   "main": "index.js",
   "dependencies": {
     "consul": "^0.29.0",
     "lodash.mergewith": "^4.6.0",
-    "semver":"5.4.1",
+    "semver": "5.4.1",
     "ut-port-jsonrpc": "^5.6.12",
     "ut-port-script": "^5.5.6",
     "ws": "^3.2.0"
