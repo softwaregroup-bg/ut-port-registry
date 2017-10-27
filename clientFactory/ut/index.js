@@ -1,6 +1,6 @@
 const ConsulWatch = require('../consulWatch');
 const UtPortJsonRpc = require('ut-port-jsonrpc');
-const consulUtils = require('../consul/utils');
+const mergeWith = require('lodash.mergewith');
 
 class UtClient extends ConsulWatch {
     init() {
@@ -37,8 +37,8 @@ class UtClient extends ConsulWatch {
     }
 
     serviceAdd(definition) {
-        var msg = consulUtils.encode(definition, this.context);
-        return this.client.send(msg, {method: 'registry.service.add'});
+        mergeWith(definition.context, this.context);
+        return this.client.send(definition, {method: 'registry.service.add'});
     }
 
     serviceFetch(criteria) {

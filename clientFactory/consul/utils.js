@@ -1,4 +1,4 @@
-const mergeWith = require('lodash.mergeWith');
+const mergeWith = require('lodash.mergewith');
 const getServiceDefinition = (record, raw) => {
     return raw ? record : {
         host: record.Service.Address,
