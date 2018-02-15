@@ -1,3 +1,13 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.3.0...v0.3.1) (2018-02-15)
+
+
+### Bug Fixes
+
+* dependencies ([c405201](https://github.com/softwaregroup-bg/ut-port-registry/commit/c405201))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.2.0...v0.3.0) (2017-10-27)
 
