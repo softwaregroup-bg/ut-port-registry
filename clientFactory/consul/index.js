@@ -34,9 +34,9 @@ class Consul extends Client {
             passing: criteria.passing,
             dc: criteria.dc
         })
-        .then((records) => {
-            return utils.decode(records, criteria);
-        });
+            .then((records) => {
+                return utils.decode(records, criteria);
+            });
     }
 };
 

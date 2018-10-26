@@ -8,7 +8,7 @@ class UtClient extends ConsulWatch {
 
         Object.assign(
             this.client.config,
-             // defaults
+            // defaults
             {
 
             },
