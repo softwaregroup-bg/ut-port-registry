@@ -37,16 +37,16 @@ class ConsulWatch extends Consul {
                     service: criteria.service,
                     raw: true
                 })
-                .then((records) => {
-                    if (!records.length) {
-                        return records;
-                    }
-                    return this.setCache(criteria.service, records)
-                        .then((records) => {
-                            this.setWatcher(criteria.service);
+                    .then((records) => {
+                        if (!records.length) {
                             return records;
-                        });
-                });
+                        }
+                        return this.setCache(criteria.service, records)
+                            .then((records) => {
+                                this.setWatcher(criteria.service);
+                                return records;
+                            });
+                    });
             })
             .then((records) => {
                 return utils.decode(records, criteria);
