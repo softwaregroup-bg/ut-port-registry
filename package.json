@@ -5,16 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "consul": "^0.29.0",
-    "lodash.mergewith": "4.6.0",
-    "semver": "5.4.1",
+    "lodash.mergewith": "4.6.1",
+    "semver": "5.6.0",
     "ws": "^3.2.0"
   },
   "devDependencies": {
-    "ut-tools": "^5.32.5"
+    "ut-tools": "^6.3.8"
   },
   "peerDependencies": {
-    "ut-port-jsonrpc": "^6.0.2",
-    "ut-port-script": "^6.0.0"
+    "ut-port-jsonrpc": "^6.3.2",
+    "ut-port-script": "^6.0.1"
   },
   "scripts": {
     "lint": "ut-lint .",
@@ -26,6 +26,7 @@
     "postpublish": "ut-postpublish",
     "postversion": "ut-postversion",
     "precommit": "ut-precommit",
+    "precover": "ut-precover",
     "prepublish": "ut-prepublish",
     "prepush": "ut-prepush",
     "pretest": "ut-pretest",
