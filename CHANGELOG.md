@@ -1,3 +1,13 @@
+# [0.4.0](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.3.1...v0.4.0) (2019-02-02)
+
+
+### Bug Fixes
+
+* ignore package-lock ([5abb36b](https://github.com/softwaregroup-bg/ut-port-registry/commit/5abb36b))
+* lint ([1a4779a](https://github.com/softwaregroup-bg/ut-port-registry/commit/1a4779a))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.3.0...v0.3.1) (2018-02-15)
 
