@@ -33,7 +33,8 @@ class UtWatch extends Ut {
     }
 
     initWs(host, service) {
-        this.ws[service] = new WebSocket(`ws://${host || url.parse(this.config.url).host}/serviceRegistry/${service}`);
+        let parsed = new url.URL(this.config.url);
+        this.ws[service] = new WebSocket(`ws://${host || parsed.host}/serviceRegistry/${service}`);
         this.ws[service].on('message', (data) => {
             try {
                 let msg = JSON.parse(data);
