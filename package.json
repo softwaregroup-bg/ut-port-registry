@@ -10,7 +10,8 @@
     "ws": "2.3.1"
   },
   "devDependencies": {
-    "ut-tools": "^6.3.8"
+    "tap": "^12.6.0",
+    "ut-tools": "^6.8.10"
   },
   "peerDependencies": {
     "ut-port-jsonrpc": "^6.3.2",
