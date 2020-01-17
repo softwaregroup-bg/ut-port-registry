@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.4.2...v0.4.3) (2020-01-17)
+
+
+### Bug Fixes
+
+* upgrade ws ([18fb4aa](https://github.com/softwaregroup-bg/ut-port-registry/commit/18fb4aa))
+
+
+
 ## [0.4.2](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.4.1...v0.4.2) (2020-01-17)
 
 
