@@ -37,13 +37,17 @@ configuring services in your infrastructure. It provides several key features:
 Registry port implements the following main features:
 
 * Add Service - register new service with health check to the consul agent.
+
     ```js
     bus.importMethod('registry.service.add')(definition).then(...)...
     ```
+
 * Fetch Service - fetch service by provided criteria.
+
     ```js
     bus.importMethod('registry.service.fetch')(criteria).then(...)...
     ```
+
 * Local cache - store the result of fetch service for later use.
 * Watches - Watches are a way of specifying a view of data (e.g. list of nodes,
   health checks) which is monitored for updates. When an update is detected, an
@@ -128,6 +132,7 @@ Example configuration:
 
 Consider the following diagram:
 
+```txt
         +----------------+
         |                |                            +--------+
         | Implementation |                            | Consul |
@@ -142,6 +147,7 @@ Consider the following diagram:
               |         HTTP Request             | Service Registry |
               +--------------------------------->|                  |
                                                  +------------------+
+```
 
 In this scenario an external implementation(Service Registry) is handling all
 the heavy tasks(checking services, updating cache, etc.). The process is as follow:
