@@ -7,7 +7,7 @@
     "consul": "^0.34.0",
     "lodash.mergewith": "4.6.2",
     "semver": "5.6.0",
-    "ws": "7.2.1"
+    "ws": "^7.2.1"
   },
   "devDependencies": {
     "tap": "^12.7.0",
