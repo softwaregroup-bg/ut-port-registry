@@ -1,3 +1,7 @@
+## [0.4.2](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.4.1...v0.4.2) (2020-01-17)
+
+
+
 ## [0.4.1](https://github.com/softwaregroup-bg/ut-port-registry/compare/v0.4.0...v0.4.1) (2019-03-22)
 
 
