@@ -10,12 +10,12 @@
     "ws": "2.3.1"
   },
   "devDependencies": {
-    "tap": "^12.6.0",
-    "ut-tools": "^6.8.10"
+    "tap": "^13.1.1",
+    "ut-tools": "^6.30.5"
   },
   "peerDependencies": {
-    "ut-port-jsonrpc": "^6.3.2",
-    "ut-port-script": "^6.0.1"
+    "ut-port-jsonrpc": "^7.0.2",
+    "ut-port-script": "^7.0.1"
   },
   "scripts": {
     "lint": "ut-lint .",
